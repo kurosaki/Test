@@ -1,0 +1,301 @@
+﻿<mah:MetroWindow x:Class="EPOS_V3.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+                      xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"                       
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d" RenderOptions.ClearTypeHint="Enabled"
+                      xmlns:tab="http://fabtab.codeplex.com"
+                      xmlns:Toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+                      xmlns:gif="http://wpfanimatedgif.codeplex.com"
+                      Title="ECPay :: Điểm thu tiền điện"
+                      TitleCaps="False"
+                      WindowTransitionsEnabled="False" 
+                      WindowStartupLocation="CenterScreen" Icon="Resources/edongnew.png" 
+                      WindowState="Maximized" Loaded="MetroWindow_Loaded" Width="1214.55" Closing="MetroWindow_Closing" KeyDown="MetroWindow_KeyDown">
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <mah:WindowCommands.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFC71B1B" Offset="1"/>
+                </LinearGradientBrush>
+            </mah:WindowCommands.Background>
+            <Button x:Name="settings" Click="settings_Click"  ToolTip="Cài đặt">
+                <Rectangle Width="15"
+                Height="15"
+                Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_settings}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button x:Name="btnHelp" Width="20" Height="20" ToolTip="Hướng dẫn (F1)" Click="btnHelp_Click" >
+                <DockPanel>
+                    <Rectangle Width="15"
+                    Height="18"
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_book_perspective_help}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </DockPanel>
+            </Button>
+            <Button x:Name="btnNotice" Click="btnNotice_Click"  ToolTip="Thông báo">
+                <Rectangle Width="15"
+                Height="15"
+                Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_warning}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button x:Name="btnLogOut" Click="btnLogOut_Click" ToolTip="Đăng xuất">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15"
+                               Height="16"
+                               Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_unlock}"  />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0" x:Name="txtAccountName"
+                               VerticalAlignment="Center"                                                                                           
+                               Text="Đăng xuất" />
+                </StackPanel>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl Margin="0,30,0,0">
+            <mah:Flyout x:Name="flyoutsControl" Theme="Light" Header="Cài đặt" AnimateOnPositionChange="{Binding AnimateOnPositionChange}" Position="Right">
+                <Grid Margin="10" Width="200">
+                    <TreeView Name="trvMenu" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MouseLeftButtonUp="trvMenu_MouseLeftButtonUp">
+                        <TreeViewItem Header="Thông tin hệ thống" IsExpanded="True">
+                            <TreeViewItem Header="Cấu hình hệ thống" Tag="0">
+                            </TreeViewItem>
+                            <TreeViewItem Header="Cập nhật" Tag="1">
+                            </TreeViewItem>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Cài đặt" IsExpanded="True">
+                            <TreeViewItem Header="Thay đổi giao diện" Tag="2">
+                            </TreeViewItem>
+                            <TreeViewItem Header="Cài đặt cấu hình" Tag="3">
+                            </TreeViewItem>
+                            <TreeViewItem Header="Đổi mật khẩu" Tag="6">
+                            </TreeViewItem>
+                            <TreeViewItem Header="Trợ giúp" Tag="4">
+                            </TreeViewItem>
+                        </TreeViewItem>
+                        <TreeViewItem Header="About" Tag="5">
+                        </TreeViewItem>
+                    </TreeView>
+                </Grid>
+            </mah:Flyout>
+            <mah:Flyout x:Name="flyoutsNotice" Theme="Light" Header="Thông báo" AnimateOnPositionChange="{Binding AnimateOnPositionChange}" Position="Right">
+                <Grid Margin="10">
+                    <GroupBox Name="gbInfo" Header="Danh sách chi tiết" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="200" Height="600" Margin="0 -30 0 0">
+                        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalAlignment="Top">
+                            <TextBox Name="txtContent" Background="Transparent"
+                             BorderThickness="0"
+                             Text="{Binding Text, Mode=OneWay}"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap" Height="Auto"></TextBox>   
+                        </ScrollViewer>
+                    </GroupBox>
+                </Grid>
+            </mah:Flyout>
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
+        
+    <Grid x:Name="RootGrid" DataContext="{Binding}">
+        <Toolkit:BusyIndicator Name="busyIndicator" IsBusy="False">
+            <Toolkit:BusyIndicator.BusyContentTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <Image gif:ImageBehavior.AnimatedSource="/Resources/loading_blue.gif" Width="50" Height="50" />
+                        <TextBlock HorizontalAlignment="Center">Xin vui lòng chờ ...</TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Toolkit:BusyIndicator.BusyContentTemplate>
+            <Toolkit:BusyIndicator.OverlayStyle>
+                <Style TargetType="Rectangle">
+                    <Setter Property="Fill" Value="Transparent"/>
+                </Style>
+            </Toolkit:BusyIndicator.OverlayStyle>
+            <Toolkit:BusyIndicator.ProgressBarStyle>
+                <Style TargetType="ProgressBar">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </Toolkit:BusyIndicator.ProgressBarStyle>
+            <DockPanel LastChildFill="True">
+                <!--MENU-->
+                <Grid Name="pnMenu" DockPanel.Dock="Left" Width="Auto" Height="Auto" Background="#248DC1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TreeView x:Name="treeMainMenu" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="White" Background="#248DC1"  FontWeight="Bold" Grid.RowSpan="2">
+                        </TreeView>
+                        <Button Name="btnHideMenu" ToolTip="Ẩn Menu" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="btnHideMenu_Click" Margin="0,240,0,179">
+                            <Rectangle Width="8" 
+                            Height="10"
+                            Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_control_rewind_variant}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+                        <Button Name="btnFillMenu" ToolTip="Hiện Menu"  Width="20" Height="20" HorizontalAlignment="Stretch" Background="White"  VerticalAlignment="Stretch" Visibility="Collapsed"  Click="btnFillMenu_Click" Grid.RowSpan="2" >
+                            <Rectangle Width="8" 
+                            Height="8"
+                            Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_control_fastforward_variant}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+                    </Grid>
+                    <Grid Name="GrdSyncData" Grid.Row="1">
+                        <StackPanel Name="stackSync" Visibility="Visible">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Name="StackPanelStatus" Margin="0 0 0 0" Orientation="Horizontal"  MaxWidth="148">
+                                    <Label Name="lblSyncStatusName" Foreground="WhiteSmoke" Content="Đang nhận:"></Label>
+                                    <StackPanel Name="panelSyncStatusL" Margin="0 0 0 0" >
+                                        <Label Name="lblSyncStatusR" Foreground="DarkBlue" FontWeight="Bold" Content="100%"></Label>
+                                    </StackPanel>
+                                    <StackPanel Name="panelSyncStatusR" Visibility="Hidden">
+                                        <Label Name="lblSyncStatusW" Foreground="#FFCC99" FontWeight="Bold" Content="100%"></Label>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Name="StackPanelRing" Margin="0 0 0 0" Width="43" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="Visible">
+                                    <StackPanel Name="StackPanelRing1" Margin="0 0 0 0" HorizontalAlignment="Left" Visibility="Visible">
+                                        <mah:ProgressRing Name="progressRing1" Padding="1,5,0,0" Foreground="DarkBlue" Width="16" Height="16" MouseLeftButtonDown="progressRing_MouseLeftButtonDown"></mah:ProgressRing>
+                                    </StackPanel>
+                                    <StackPanel Name="StackPanelRing2" Margin="0 0 3 0" HorizontalAlignment="Right" Visibility="Visible">
+                                        <mah:ProgressRing Name="progressRing2" Padding="1,5,0,0" Foreground="Bisque" Width="16" Height="16" MouseLeftButtonDown="progressRing_MouseLeftButtonDown"></mah:ProgressRing>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel >
+                            <StackPanel Orientation="Horizontal">
+                                <Label Foreground="WhiteSmoke" Content="Số hóa đơn giao thu:"></Label>
+                                <Label Name="lblBillsCount" Foreground="#FFCC99" FontWeight="Bold" Content="------"></Label>
+                            </StackPanel >
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Foreground="WhiteSmoke" Content="Thời gian: "></Label>
+                                <Label Foreground="#FFCC99" FontWeight="Bold" Name="lbllastDate" Content="--/--/---- --:--"></Label>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Name="stackNotSync" Visibility="Hidden" VerticalAlignment="Bottom">
+                            <Label Foreground="WhiteSmoke" Content="Không có dữ liệu giao thu"></Label>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+
+                <!--</StackPanel>-->
+                <!--</Border>-->
+                <!--FOOTER-->
+                <StackPanel Name="pnFooter"  Orientation="Vertical" DockPanel.Dock="Bottom" Height="60" Background="WhiteSmoke">
+                    <!-- create viewmodel -->
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                        </Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <Grid VerticalAlignment="Stretch" Height="60">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90*"/>
+                            <ColumnDefinition Width="10*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <StackPanel Height="30">
+                                    <Label Content="Số ví:" Width="37"/>
+                                    <Label Name="lblEDongAccount" Width="113" FontWeight="Bold"/>
+                                    <Label Name="lblAccountBalanceTitle" Content="Số dư ví:" Width="60"/>
+                                    <Label Name="lblAccountBalance" Width="140" FontWeight="Bold" Foreground="Blue"/>
+                                    <Label Content="Số dư khả dụng:" Width="100" />
+                                    <Label Name="lblAvailableBalances" Width="140" FontWeight="Bold" Foreground="Red"/>
+                                    <DockPanel Name="isnableAmountOff">
+                                        <Label Content="Số tiền chưa đẩy chấm nợ:" Width="150"/>
+                                        <Label Name="lblAmountOff" Width="110" FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <Label Content="Ví quản lý:" Width="70"/>
+                                    <Label Name="lblparentEdong" Width="110" FontWeight="Bold"/>
+                                    <Label Content="Máy chủ đồng bộ:" Visibility="Hidden" HorizontalAlignment="Right"/>
+                                    <Image Name="imgConectSync" Visibility="Hidden" ToolTip="Kết nối"  Width="17" Height="17" Source="{StaticResource NetworkConnectSync}"/>
+                                    <Image Name="imgDisconnectSync" Visibility="Hidden"  ToolTip="Không kết nối" Width="17" Height="17" Source="{StaticResource NetworkDisconnectSync}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <StackPanel>
+                                    <Label Content="Chủ tài khoản:" Width="85"/>
+                                    <Label x:Name="lblAccountName" Width="265"  FontWeight="Bold" mah:ControlsHelper.ContentCharacterCasing="Upper"  />
+                                    <Label Name="lblLockAmountTitle" Content="Số tiền bị khóa:" Width="100"/>
+                                    <Label Name="lblLockAmount" FontWeight="Bold" Width="140"/>
+                                    <DockPanel Name="isnableAmountPending">
+                                        <Label Name="lblPayOffEstoreAmountTitle" Content="Số tiền chờ xử lý:" Width="140"/>
+                                        <Label Name="lblPayOffEstoreAmount" Width="120" FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <Label Content="Máy chủ thanh toán:"/>
+                                    <!--<Label x:Name="lblServer" FontWeight="Bold" HorizontalAlignment="Right"/>-->
+                                    <Image Name="imgConect" ToolTip="Kết nối"  Width="15" Height="15" Source="{StaticResource NetworkConnect}" />
+                                    <Image Name="imgDisconnect" Visibility="Collapsed" ToolTip="Không kết nối" Width="15" Height="15" Source="{StaticResource NetworkDisconnect}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <DockPanel HorizontalAlignment="Right">
+                                <Button Name="btnUpdateBalances" ToolTip="Cập nhật số dư (F5)" HorizontalAlignment="Right" Margin="0 10 10 10" Click="btnUpdateBalances_Click" FontWeight="Bold" mah:ControlsHelper.ContentCharacterCasing="Normal">
+                                    <Button.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                            <GradientStop Color="DarkGray"/>
+                                            <GradientStop Color="White" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Button.Background>
+                                    <DockPanel>
+                                        <Rectangle Width="13"
+                                       Height="15"
+                                       Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Fill"
+                                         Visual="{StaticResource appbar_refresh}"  />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"                                                                                           
+                               Text="Cập nhật số dư"/>
+                                    </DockPanel>
+                                </Button>
+                            </DockPanel>
+                        </Grid>
+                    </Grid>
+
+                </StackPanel>
+                <!--CONTENT-->
+                <Grid Name="gridContent" SizeChanged="gridContent_SizeChanged">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                    </Grid.RowDefinitions>
+                </Grid>
+            </DockPanel>
+        </Toolkit:BusyIndicator>
+    </Grid>
+</mah:MetroWindow>
